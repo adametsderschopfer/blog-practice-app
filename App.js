@@ -1,21 +1,32 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import Main from "./src/Main";
+import * as Font from "expo-font";
+import AppLoading from "expo-app-loading";
+
+const loadFont = () => Font.loadAsync({
+    "Roboto-Bold": require('./assets/fonts/Roboto/Roboto-Bold.ttf'),
+});
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+    const [isFontLoaded, setFontLoaded] = React.useState(false);
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+    if (isFontLoaded) {
+        return (
+            <Main />
+        )                                           
+    } else {
+        return (
+            <AppLoading onError={AppLoadingErrorHandler} startAsync={loadFont} onFinish={AppLoadingFinishHandler} />
+        );
+    }
+
+    function AppLoadingErrorHandler(e) {
+        console.trace(e);
+    }
+
+    function AppLoadingFinishHandler() {
+        setFontLoaded(true);
+    }
+}
+                                              
+                                    
